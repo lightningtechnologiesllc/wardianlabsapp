@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Mi SaaS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+
+<div class="w-full max-w-sm">
+    <div class="bg-gray-950 border border-gray-800 rounded-2xl shadow-xl p-8 text-center">
+        <h1 class="text-2xl font-bold text-white mb-2">Bienvenido</h1>
+        <p class="text-gray-400 text-sm mb-6">
+            Accede a tu panel con tu cuenta de Discord
+        </p>
+
+        <a href="{{ path('app_login_discord') }}"
+           class="w-full flex items-center justify-center gap-2 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-xl py-3 text-lg font-medium shadow-md transition">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+                <path d="M20.317 4.369a19.791 19.791 0 0 0-4.885-1.515c-.21.375-.453.883-.62 1.279a18.27 18.27 0 0 0-5.624 0c-.167-.396-.41-.904-.62-1.279a19.791 19.791 0 0 0-4.885 1.515C1.77 9.283.728 14.042 1.09 18.739a19.934 19.934 0 0 0 5.993 3.011c.482-.661.91-1.365 1.272-2.106a12.84 12.84 0 0 1-2.02-.979c.169-.125.335-.254.496-.385 3.924 1.829 8.176 1.829 12.063 0 .162.131.328.26.497.385-.64.379-1.314.704-2.02.979.361.741.789 1.445 1.272 2.106a19.934 19.934 0 0 0 5.993-3.011c.47-5.829-.791-10.555-3.819-14.37zM9.545 15.568c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.419 0 1.334-.955 2.419-2.157 2.419zm4.91 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.419 0 1.334-.946 2.419-2.157 2.419z"/>
+            </svg>
+            Continuar con Discord
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

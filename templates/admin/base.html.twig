@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="turbo-prefetch" content="false">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+{#    <body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-700 via-gray-400 to-gray-700">#}
+
+    <body class="h-full bg-gray-100 dark:bg-gray-900">
+        {% block body %}{% endblock %}
+
+    </body>
+</html>

@@ -1,0 +1,138 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Connect Guild{% endblock %}
+
+{% block body %}
+    <div class="min-h-full">
+        <div class="bg-indigo-600 pb-32 dark:bg-indigo-800">
+            {% include 'admin/_menus/top_bar.html.twig' %}
+            <header class="py-10">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-3xl font-bold tracking-tight text-white">Connect Server</h1>
+                </div>
+            </header>
+        </div>
+
+        <main class="-mt-32">
+            <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+                {% if flash.has('message') %}
+                    <div class="mb-4 rounded-lg bg-green-50 p-4 text-sm text-green-800 dark:bg-green-900/20 dark:text-green-400">
+                        {{ flash.get('message') }}
+                    </div>
+                {% endif %}
+
+                {% if error is defined %}
+                    <div class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-red-900/20 dark:text-red-400">
+                        {{ error }}
+                        <a href="{{ path('admin_stripe_list_accounts') }}" class="font-semibold underline hover:text-red-900 dark:hover:text-red-300">
+                            Go to Stripe Accounts
+                        </a>
+                    </div>
+                {% endif %}
+
+                <div
+                    class="rounded-lg bg-white px-5 py-6 shadow-sm sm:px-6 dark:bg-gray-800 dark:shadow-none dark:outline-1 dark:-outline-offset-1 dark:outline-white/10">
+
+                    {% if error is not defined %}
+                        {% if not connectedBot %}
+                            <div class="m-8 bg-white shadow-sm sm:rounded-lg dark:bg-gray-800/50 dark:shadow-none dark:outline dark:-outline-offset-1 dark:outline-white/10">
+                                <div class="px-4 py-5 sm:p-6">
+                                    <h3 class="text-base font-semibold text-gray-900 dark:text-white">Application installation</h3>
+                                    <div class="mt-2 max-w-xl text-sm text-gray-500 dark:text-gray-400">
+                                        <p>Our application needs access to your Discord server</p>
+                                    </div>
+                                    <div class="mt-5">
+
+                                        <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+                                           href="{{ discordOauthApplicationInstallUrl }}" target="_blank"
+                                        >
+                                            Install Application
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+
+                    <h2 class="text-base/7 font-semibold text-gray-900 dark:text-white">Assign roles to Stripe
+                        products/prices</h2>
+                    <p class="mt-1 text-sm/6 text-gray-500 dark:text-gray-400">Select which roles will be assigned when
+                        a product is purchased.</p>
+                    {#                    {{ dump(stripeAccount) }} #}
+                    {#                    {{ dump(stripePlans) }} #}
+
+                    {#                    {%  for stripePlan in stripePlans %} #}
+                    {#                    <div class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow-sm dark:divide-white/10 dark:bg-gray-800/50 dark:shadow-none dark:outline dark:-outline-offset-1 dark:outline-white/10"> #}
+                    {#                        <div class="px-4 py-5 sm:px-6"> #}
+                    {#                            <p class="text-sm/6 font-semibold text-gray-900 dark:text-white">Price: {{ stripePlan.id }}</p> #}
+                    {#                            <p class="mt-1 truncate text-xs/5 text-gray-500 dark:text-gray-400">Product: {{ stripePlan.product }}</p> #}
+                    {#                            <p class="mt-1 truncate text-xs/5 text-gray-500 dark:text-gray-400">Price: {{ stripePlan.formatted_unit_amount }} {{ stripePlan.currency }}</p> #}
+                    {#                        </div> #}
+                    {#                        <div class="px-4 py-5 sm:p-6"> #}
+                    {#                            {% for role in guildData.roles %} #}
+                    {#                                {{ dump(role) }} #}
+                    {#                            {% endfor %} #}
+                    {#                        </div> #}
+                    {#                    </div> #}
+                    {#                    {% endfor %} #}
+
+                    <div class="mt-8">
+                        <form method="post" action="{{ url('post_admin_discord_connect_guild', {guildId: guildData.id}) }}">
+                            <ul role="list" class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
+                                {% for stripePrice in stripePrices.filterRecurrent %}
+                                    <li class="overflow-hidden rounded-xl outline outline-gray-200 dark:-outline-offset-1 dark:outline-white/10">
+                                        {#                                {{ dump(stripePrice) }} #}
+                                        <input type="text" value="{{ stripePrice.id }}" hidden/>
+                                        <div
+                                            class="items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6 dark:border-white/10 dark:bg-gray-800/50">
+                                            <p class="text-sm/6 font-semibold text-gray-900 dark:text-white">
+                                                Price: {{ stripePrice.id }}</p>
+                                            <p class="mt-1  text-xs/5 text-gray-500 dark:text-gray-400">
+                                                Product: {{ stripePrice.product.name }}</p>
+                                            <p class="mt-1 truncate text-xs/5 text-gray-500 dark:text-gray-400">
+                                                Price: {{ stripePrice.formattedUnitAmount }} {{ stripePrice.currency }}</p>
+                                            <p class="mt-1 truncate text-xs/5 text-gray-500 dark:text-gray-400">
+                                                Every {{ stripePrice.intervalCount }} {{ stripePrice.interval }}</p>
+                                        </div>
+                                        <dl class="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm/6 dark:divide-white/10">
+                                            {% for role in guildData.roles %}
+                                                {% if role.name != "@everyone" and not (role.name|lower starts with 'wardianlabs') %}
+                                                    <div class="flex justify-between gap-x-4 py-3">
+                                                        <dt class="text-gray-500 dark:text-gray-400">
+                                                            <input name="{{ stripePrice.id }}[]" value="{{ role.id }}"
+                                                                   type="checkbox"
+                                                            {% if tenantPriceToRolesMapping and tenantPriceToRolesMapping.doesRoleExist(stripePrice.id, role.id) %}
+                                                                checked
+                                                            {% endif %} />
+                                                        </dt>
+                                                        <dd class="text-gray-700 dark:text-gray-300">{{ role.name }}</dd>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </dl>
+
+                                    {#                            <div class="flex min-w-0 gap-x-4"> #}
+                                    {#                                <div class="min-w-0 flex-auto"> #}
+                                    {#                                    <p class="text-sm/6 font-semibold text-gray-900 dark:text-white">Price: {{ stripePlan.id }}</p> #}
+                                    {#                                    <p class="mt-1 truncate text-xs/5 text-gray-500 dark:text-gray-400">Product: {{ stripePlan.product }}</p> #}
+                                    {#                                    <p class="mt-1 truncate text-xs/5 text-gray-500 dark:text-gray-400">Price: {{ stripePlan.formatted_unit_amount }} {{ stripePlan.currency }}</p> #}
+                                    {#                                </div> #}
+                                    {#                            </div> #}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="mt-6 flex justify-start">
+                                <input type="submit"
+                                       class="inline-flex items-center rounded-md cursor-pointer bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500"
+                                       value="Assign Roles"
+                                /></div>
+                        </form>
+                    </div>
+                        {% endif %}
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}

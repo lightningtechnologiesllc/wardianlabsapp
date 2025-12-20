@@ -1,0 +1,166 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="mt-8 px-8 text-tailgrids-black">
+        <div class="flex item-center relative">
+            <div class="text-left m-auto w-full align-middle">
+                <div>
+                    <h3 class="text-3xl font-bold leading-6">{{ "Wardian App" | trans }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="home" class="mt-10 px-8 relative z-10 overflow-hidden bg-white">
+        <section class="pb-10 pt-20 lg:pb-20 lg:pt-[120px] dark:bg-dark">
+            <div class="container mx-auto sm: md:w-3/4 xl:w-1/2">
+                <ol class="overflow-hidden space-y-8">
+                    <li
+                        class="
+                            relative step-line w-full after:-bottom-11
+                            {% if stripeUser %}
+                            step-line-active
+                            {% endif %}
+                        ">
+                        <div class="flex items-start font-medium w-full">
+                              <span
+                                  class="
+                                    step-indicator
+                                    {% if stripeUser %}
+                                    step-indicator-completed
+                                    {% else %}
+                                     step-indicator-active
+                                    {% endif %}
+                                  ">
+                              1
+                              </span>
+                            <div class="block w-200 mt-[-0.4rem]">
+                                <h4 class="text-lg text-indigo-600">Step 1</h4>
+                                <span class="text-sm">Connect your Stripe account to check your subscription status</span>
+
+                                <div class="p-8 text-center sm:p-9 md:p-7 xl:p-12">
+                                    {#                                <form action="{{ url('frontend_stripe_check_post') }}" method="post">#}
+                                    <h3>
+                                        <img class="h-16 m-auto" src="{{ asset('images/logo_stripe/blurple.svg') }}" />
+                                    </h3>
+
+                                    {% if stripeUser %}
+                                        <div class="flex mt-8">
+                                            <div class="w-full text-center px-8">
+                                                <p>Hello, {{ stripeUser.email }}!</p>
+                                            </div>
+                                        </div>
+                                        <a href="{{ url('frontend_stripe_disconnect') }}"
+                                           class="inline-block button mt-8 bg-white border-primary py-3 px-7 hover:cursor-pointer hover:bg-gray-200  disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5">
+                                            Disconnect Stripe
+                                        </a>
+                                    {% else %}
+                                        <p class="mt-4 text-base leading-relaxed text-body-color dark:text-dark-6">
+                                            The email address you used to pay for the subscription:
+                                        </p>
+                                        <div>
+                                            {{ component('StripeConnect', { "stripeUserData": stripeUserData }) }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li
+                        class="
+                            relative step-line z-10 after:z-0 after:-bottom-12
+                            {% if stripeUser and discordUser %}
+                                step-line-active
+                            {% endif %}
+                        ">
+                        <div class="flex items-start font-medium w-full">
+                            <span
+
+                              class="step-indicator
+                                    {% if stripeUser and discordUser %}
+                                    step-indicator-completed
+                                    {% elseif stripeUser %}
+                                     step-indicator-active
+                                    {% else %}
+                                    step-indicator-pending
+                                    {% endif %}">
+                                2
+                            </span>
+                            <div class="block w-200 mt-[-0.4rem]">
+                                <h4 class="text-lg text-indigo-600">Step 2</h4>
+                                <span class="text-sm">Connect your Discord account</span>
+                                <div class="p-8 text-center sm:p-9 md:p-7 xl:p-12">
+                                    <h3 class="my-4">
+                                        <img class="h-8 m-auto" src="{{ asset('images/logo_discord/blurple.svg') }}" />
+                                    </h3>
+
+
+                                    {% if discordUser %}
+                                        <div class="flex mt-8">
+                                            <div class="w-1/4 relative  ">
+                                                <img class="w-10/12 m-auto right-0 absolute"
+                                                     src="https://cdn.discordapp.com/avatars/{{ discordUser.id }}/{{ discordUser.avatar }}" />
+                                            </div>
+                                            <div class="w-3/4 text-left px-8">
+
+                                                <p>Hello, {{ discordUser.globalName }}!</p>
+                                                <p>Your Discord ID is: {{ discordUser.id }}.</p>
+                                                <p>Your Username is: {{ discordUser.username }}</p>
+                                            </div>
+                                        </div>
+                                        <a href="{{ url('frontend_discord_disconnect') }}"
+                                           class="inline-block button mt-8 bg-white border-primary py-3 px-7 hover:cursor-pointer hover:bg-gray-200  disabled:bg-gray-3 disabled:border-gray-3 disabled:text-dark-5">
+                                            Disconnect Discord
+                                        </a>
+                                    {% else %}
+                                        <p class="mb-7 text-base leading-relaxed text-body-color">
+                                            We need your Discord user. Please log in<br /> to get your Discord user information.
+                                        </p>
+                                        {% if stripeUser %}
+                                            {{ component('DiscordConnect', {}) }}
+                                        {% else %}
+                                            <button disabled
+                                                class="button disabled">
+                                                Login to Discord
+                                            </button>
+                                        {% endif %}
+                                    {%  endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="relative">
+                        <div class="flex items-start font-medium w-full  ">
+                            <span
+                              class="step-indicator
+                                {% if stripeUser and discordUser %}
+                                 step-indicator-active
+                                {% else %}
+                                step-indicator-pending
+                                {% endif %}">
+                                  3
+                            </span>
+                            <div class="block w-200 mt-[-0.4rem]">
+                                <h4 class="text-lg text-gray-900">Step 3</h4>
+                                <span class="text-sm">Link your Stripe account to your Discord account to access the Discord server</span>
+
+                                <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
+                                    {% if stripeUser and discordUser %}
+                                        {{ component('LinkAccounts', {}) }}
+                                    {% else %}
+                                        <button disabled
+                                                class="button disabled">
+                                            Link
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+    </section>
+{% endblock %}

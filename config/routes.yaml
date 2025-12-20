@@ -1,0 +1,5 @@
+controllers:
+    resource:
+        path: ../lib/modules/src/
+        namespace: App\
+    type: attribute
