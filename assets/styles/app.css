@@ -1,0 +1,63 @@
+@import "tailwindcss";
+@source not "../../public";
+
+@theme {
+    --color-danger: #DC3545;
+    --color-tahiti: #3ab7bf;
+    --color-bermuda: #78dcca;
+}
+
+@layer components {
+    .button {
+        @apply text-sm mt-8 py-2.5 px-6 rounded-lg border inline-flex items-center justify-center text-center text-base font-medium cursor-pointer;
+    }
+
+    .primary {
+        @apply bg-indigo-500 text-white font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700;
+    }
+
+    .disabled {
+        @apply opacity-50 cursor-not-allowed;
+    }
+
+    .alert {
+        @apply p-4 mb-4 text-sm rounded-lg;
+    }
+    .alert-success {
+        @apply bg-green-100 text-green-800 border border-green-200;
+    }
+    .alert-danger {
+        @apply bg-red-50 bg-red-50 dark:bg-gray-800 dark:text-red-400;
+    }
+
+    .step-indicator{
+        @apply w-8 h-8 aspect-square rounded-full border-2 relative flex justify-center items-center mr-3 text-sm lg:w-10 lg:h-10;
+    }
+    .step-indicator-active {
+        @apply bg-indigo-50 z-20 border-indigo-600 text-indigo-600;
+    }
+    .step-indicator-pending {
+        @apply bg-gray-50 z-10 border-gray-200;
+    }
+    .step-indicator-completed {
+        @apply bg-indigo-600 border-transparent text-white;
+    }
+
+    .step-line {
+        @apply after:content-[''] after:w-0.5 after:h-full after:inline-block after:absolute after:left-4 lg:after:left-5  after:bg-gray-200;
+    }
+    .step-line-active {
+        @apply  after:bg-indigo-600 ;
+    }
+
+    .admin-menu-section-link {
+        @apply rounded-md px-3 py-2 text-sm font-medium text-white;
+    }
+    .admin-menu-section-link-active {
+        @apply bg-indigo-700 dark:bg-indigo-950/40;
+    }
+    .admin-menu-section-link-inactive {
+        @apply hover:bg-indigo-500/75 dark:hover:bg-indigo-700/75;
+    }
+
+}

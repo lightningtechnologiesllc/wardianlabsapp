@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="./tests/bootstrap.php"
+         cacheDirectory=".phpunit.cache"
+         executionOrder="depends,defects"
+         requireCoverageMetadata="true"
+         beStrictAboutCoverageMetadata="false"
+         beStrictAboutOutputDuringTests="true"
+         displayDetailsOnPhpunitDeprecations="true"
+         failOnPhpunitDeprecation="true"
+         failOnRisky="true"
+         failOnWarning="true">
+
+
+    <php>
+        <ini name="display_errors" value="1" />
+        <ini name="error_reporting" value="-1" />
+        <server name="APP_ENV" value="test" force="true" />
+        <server name="KERNEL_CLASS" value="App\Kernel" />
+        <server name="PANTHER_EXTERNAL_BASE_URI" value="https://app.wardianlabs.test" />
+        <server name="PANTHER_ERROR_SCREENSHOT_DIR" value="/app/var/screenshots" />
+        <server name="PANTHER_NO_SANDBOX" value="true" />
+        <server name="PANTHER_NO_HEADLESS" value="false" />
+        <server name="PANTHER_CHROME_ARGUMENTS" value="--window-size=1920,1080 --disable-dev-shm-usage --no-sandbox --ignore-certificate-errors" />
+        <env name="APP_ENV" value="test" force="true" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+    </php>
+
+<!--    <coverage-->
+<!--        includeUncoveredFiles="true"-->
+<!--        pathCoverage="true"-->
+<!--        ignoreDeprecatedCodeUnits="true"-->
+<!--        disableCodeCoverageIgnore="true">-->
+<!--        <report>-->
+<!--            <clover outputFile="build/coverage/clover.xml"/>-->
+<!--            <html outputDirectory="build/coverage/html"/>-->
+<!--        </report>-->
+<!--    </coverage>-->
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>lib/modules/tests/unit</directory>
+        </testsuite>
+        <!--        <testsuite name="Functional">-->
+        <!--            <directory>lib/modules/tests/functional</directory>-->
+        <!--        </testsuite>-->
+        <testsuite name="Integration">
+            <directory>lib/modules/tests/integration</directory>
+        </testsuite>
+        <testsuite name="E2E">
+            <directory>lib/modules/tests/e2e</directory>
+        </testsuite>
+    </testsuites>
+
+    <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
+        <include>
+            <directory>lib/modules/src</directory>
+        </include>
+    </source>
+
+    <extensions>
+        <bootstrap class="Symfony\Component\Panther\ServerExtension" />
+        <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+    </extensions>
+</phpunit>

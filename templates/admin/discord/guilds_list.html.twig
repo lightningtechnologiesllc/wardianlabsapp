@@ -1,0 +1,72 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="min-h-full">
+        <div class="bg-indigo-600 pb-32 dark:bg-indigo-800">
+            {% include 'admin/_menus/top_bar.html.twig' %}
+            <header class="py-10">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-3xl font-bold tracking-tight text-white">Servers</h1>
+                </div>
+            </header>
+        </div>
+
+        <main class="-mt-24 pb-8">
+            <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+                <div
+                    class="rounded-lg bg-white px-5 py-6 shadow-sm sm:px-6 dark:bg-gray-800 dark:shadow-none dark:outline-1 dark:-outline-offset-1 dark:outline-white/10">
+
+                    <ul role="list" class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
+
+                        {% for guild in guilds %}
+                            <li class="overflow-hidden rounded-xl outline outline-gray-200 dark:-outline-offset-1 dark:outline-white/10">
+                                <div
+                                    class="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6 dark:border-white/10 dark:bg-gray-800/50">
+
+                                    {% if guild.icon %}
+                                        <img
+                                            src="https://cdn.discordapp.com/icons/{{ guild.id }}/{{ guild.icon }}.png"
+                                            alt="{{ guild.name }}"
+                                            class="size-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10 dark:bg-gray-700 dark:ring-white/10">
+                                        <div class="text-sm/6 font-medium text-gray-900 dark:text-white">
+                                            {{ guild.name|length > 60 ? guild.name|slice(0, 60) ~ '...' : guild.name }}
+                                        </div>
+                                    {% else %}
+                                        <div class="text-sm/6 font-medium text-gray-900 dark:text-white min-h-12">
+                                            {{ guild.name|length > 80 ? guild.name|slice(0, 80) ~ '...' : guild.name }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <dl class="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm/6 dark:divide-white/10">
+                                    <div class="flex justify-between gap-x-4 py-3">
+                                        <dt class="text-xs text-gray-400">ID</dt>
+                                        <dd class="text-xs text-gray-400">{{ guild.id }}</dd>
+                                    </div>
+                                    <div class="flex gap-x-4 py-3">
+                                        <a class="m-auto block rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+                                           href="{{ url('admin_discord_connect_guild', {guildId: guild.id}) }}"
+                                        >
+                                            Configure
+                                        </a>
+
+                                    </div>
+                                </dl>
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+                <div
+                    class="border-t border-gray-200 py-8 text-center text-sm text-gray-500 sm:text-left dark:border-gray-700 dark:text-gray-400">
+                    <span class="block sm:inline">&copy; 2025 WardianLabs</span> <span class="block sm:inline">All rights reserved.</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+knpu_oauth2_client:
+    clients:
+        # configure your clients as described here: https://github.com/knpuniversity/oauth2-client-bundle#configuration
+        discord_main:
+            type: 'discord'
+            client_id: '%discord_client_id%'
+            client_secret: '%discord_client_secret%'
+            redirect_route: 'frontend_discord_check'
+            use_state: true
+
+        discord_admin:
+            type: 'discord'
+            client_id: '%discord_client_id%'
+            client_secret: '%discord_client_secret%'
+            redirect_route: 'admin_discord_check'
+            use_state: true
+
+        stripe_admin:
+            type: stripe
+            client_id: '%env(OAUTH_STRIPE_CLIENT_ID)%'
+            client_secret: '%env(OAUTH_STRIPE_CLIENT_SECRET)%'
+            redirect_route: admin_stripe_installation_callback
+            use_state: false

@@ -1,0 +1,11 @@
+twig:
+    file_name_pattern: '*.twig'
+    strict_variables: true
+    globals:
+        flash: '@App\Shared\Infrastructure\Symfony\FlashSession'
+        stripe_app_installation_link: '%env(STRIPE_APP_INSTALLATION_LINK)%'
+        main_domain: '%env(MAIN_DOMAIN)%'
+
+when@test:
+    twig:
+        strict_variables: true

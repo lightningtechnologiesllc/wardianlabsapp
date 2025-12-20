@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "wardianapp.fullname" . }}
+  labels:
+    {{- include "wardianapp.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  {{- if gt (int .Values.replicaCount) 1 }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  {{- else }}
+  strategy:
+    type: Recreate
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "wardianapp.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "wardianapp.selectorLabels" . | nindent 8 }}
+    spec:
+      initContainers:
+        - name: copy-public-assets
+          image: "{{ .Values.images.php.repository }}:{{ .Values.images.php.tag }}"
+          imagePullPolicy: {{ .Values.images.php.pullPolicy }}
+          command: ['sh', '-c', 'cp -r /app/public/* /public-assets/']
+          volumeMounts:
+            - name: public-assets
+              mountPath: /public-assets
+      containers:
+        - name: nginx
+          image: "{{ .Values.images.nginx.repository }}:{{ .Values.images.nginx.tag }}"
+          imagePullPolicy: {{ .Values.images.nginx.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.nginx.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: public-assets
+              mountPath: /app/public
+
+        - name: php
+          image: "{{ .Values.images.php.repository }}:{{ .Values.images.php.tag }}"
+          imagePullPolicy: {{ .Values.images.php.pullPolicy }}
+          ports:
+            - name: php-fpm
+              containerPort: 9000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "wardianapp.fullname" . }}-config
+          env:
+            - name: SYMFONY_DECRYPTION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "wardianapp.fullname" . }}-secrets
+                  key: SYMFONY_DECRYPTION_SECRET
+            - name: APP_ENV
+              value: prod
+          resources:
+            {{- toYaml .Values.php.resources | nindent 12 }}
+          startupProbe:
+            tcpSocket:
+              port: php-fpm
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 30
+          livenessProbe:
+            tcpSocket:
+              port: php-fpm
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: php-fpm
+            periodSeconds: 5
+            timeoutSeconds: 3
+          volumeMounts:
+            - name: public-assets
+              mountPath: /app/public
+
+        - name: worker
+          image: "{{ .Values.images.php.repository }}:{{ .Values.images.php.tag }}"
+          imagePullPolicy: {{ .Values.images.php.pullPolicy }}
+          args:
+            - php
+            - bin/console
+            - messenger:consume
+            - async
+            - --time-limit={{ .Values.worker.timeLimit }}
+            - --memory-limit={{ .Values.worker.memoryLimit }}
+            - -vv
+          envFrom:
+            - configMapRef:
+                name: {{ include "wardianapp.fullname" . }}-config
+          env:
+            - name: SYMFONY_DECRYPTION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "wardianapp.fullname" . }}-secrets
+                  key: SYMFONY_DECRYPTION_SECRET
+            - name: APP_ENV
+              value: prod
+          resources:
+            {{- toYaml .Values.worker.resources | nindent 12 }}
+
+      volumes:
+        - name: public-assets
+          emptyDir: {}

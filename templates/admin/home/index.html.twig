@@ -1,0 +1,256 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="min-h-full">
+        <div class="bg-indigo-600 pb-32 dark:bg-indigo-800">
+            {% include 'admin/_menus/top_bar.html.twig' %}
+            <header class="py-10">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-3xl font-bold tracking-tight text-white">Home</h1>
+                </div>
+            </header>
+        </div>
+
+        <main class="-mt-32">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <h2 class="sr-only">Setup Steps</h2>
+
+                <!-- Grid of cards: 1 column on mobile, 3 columns on desktop -->
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+
+                    <!-- Stripe Account Card -->
+                    <div class="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800 dark:shadow-none dark:outline dark:outline-1 dark:-outline-offset-1 dark:outline-white/10">
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    {% if onboarding_steps.stripe_connected %}
+                                        <!-- Completed Icon (Credit Card with Checkmark) -->
+                                        <div class="flex size-12 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/20">
+                                            <svg class="size-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                                            </svg>
+                                        </div>
+                                    {% else %}
+                                        <!-- Pending Icon (Credit Card) -->
+                                        <div class="flex size-12 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/20">
+                                            <svg class="size-6 text-orange-600 dark:text-orange-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                                            </svg>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="ml-4 w-0 flex-1">
+                                    <dl>
+                                        <dt class="truncate text-sm font-medium text-gray-500 dark:text-gray-400">Stripe Account</dt>
+                                        <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
+                                            {% if onboarding_steps.stripe_connected %}
+                                                <span class="text-green-600 dark:text-green-400">Connected</span>
+                                            {% else %}
+                                                <span class="text-orange-600 dark:text-orange-400">Action required</span>
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-3 dark:bg-gray-900/50">
+                            {% if onboarding_steps.stripe_connected %}
+                                <a href="{{ url('admin_stripe_list_accounts') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                    Manage <span aria-hidden="true">&rarr;</span>
+                                </a>
+                            {% else %}
+                                <a href="{{ url('admin_stripe_list_accounts') }}" class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400">
+                                    Set Up
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Discord Server Card -->
+                    <div class="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800 dark:shadow-none dark:outline dark:outline-1 dark:-outline-offset-1 dark:outline-white/10">
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    {% if onboarding_steps.discord_connected %}
+                                        <!-- Completed Icon (Chat Bubble) -->
+                                        <div class="flex size-12 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/20">
+                                            <svg class="size-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                                            </svg>
+                                        </div>
+                                    {% else %}
+                                        <!-- Pending Icon (Chat Bubble) -->
+                                        <div class="flex size-12 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/20">
+                                            <svg class="size-6 text-orange-600 dark:text-orange-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                                            </svg>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="ml-4 w-0 flex-1">
+                                    <dl>
+                                        <dt class="truncate text-sm font-medium text-gray-500 dark:text-gray-400">Discord Server</dt>
+                                        <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
+                                            {% if onboarding_steps.discord_connected %}
+                                                <span class="text-green-600 dark:text-green-400">Connected</span>
+                                            {% else %}
+                                                <span class="text-orange-600 dark:text-orange-400">Action required</span>
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-3 dark:bg-gray-900/50">
+                            {% if onboarding_steps.discord_connected %}
+                                <a href="{{ url('admin_list_discord_servers') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                    Manage <span aria-hidden="true">&rarr;</span>
+                                </a>
+                            {% else %}
+                                <a href="{{ url('admin_list_discord_servers') }}" class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400">
+                                    Set Up
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Tenant Configuration Card -->
+                    <div class="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800 dark:shadow-none dark:outline dark:outline-1 dark:-outline-offset-1 dark:outline-white/10">
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    {% if onboarding_steps.tenant_configured %}
+                                        <!-- Completed Icon (Cog) -->
+                                        <div class="flex size-12 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/20">
+                                            <svg class="size-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                        </div>
+                                    {% else %}
+                                        <!-- Pending Icon (Cog) -->
+                                        <div class="flex size-12 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/20">
+                                            <svg class="size-6 text-orange-600 dark:text-orange-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="ml-4 w-0 flex-1">
+                                    <dl>
+                                        <dt class="truncate text-sm font-medium text-gray-500 dark:text-gray-400">Tenant Configuration</dt>
+                                        <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
+                                            {% if onboarding_steps.tenant_configured %}
+                                                <span class="text-green-600 dark:text-green-400">Configured</span>
+                                            {% else %}
+                                                <span class="text-orange-600 dark:text-orange-400">Action required</span>
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-3 dark:bg-gray-900/50">
+                            {% if onboarding_steps.tenant_configured %}
+                                <a href="{{ url('admin_tenant_config') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                    Manage <span aria-hidden="true">&rarr;</span>
+                                </a>
+                            {% else %}
+                                <a href="{{ url('admin_tenant_config') }}" class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400">
+                                    Set Up
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+        <footer>
+            <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+                <div
+                    class="border-t border-gray-200 py-8 text-center text-sm text-gray-500 sm:text-left dark:border-gray-700 dark:text-gray-400">
+                    <span class="block sm:inline">&copy; 2025 WardianLabs</span> <span class="block sm:inline">All rights reserved.</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+
+
+
+
+
+    {#    <div class="container mx-auto py-10 px-6"> #}
+
+
+    {#        <!-- Sidebar --> #}
+    {#        <aside class="w-64 bg-gray-950 border-r border-gray-800 flex flex-col"> #}
+    {#            <div class="p-6 text-2xl font-bold text-white border-b border-gray-800"> #}
+    {#                Mi SaaS #}
+    {#            </div> #}
+    {#            <nav class="flex-1 p-4 space-y-2"> #}
+    {#                <a href="{{ path('admin_home') }}" #}
+    {#                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition {% if app.request.get('_route') == 'admin_home' %}bg-gray-800{% endif %}"> #}
+    {#                    🏠 <span>Inicio</span> #}
+    {#                </a> #}
+    {#                <a href="#" #}
+    {#                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition"> #}
+    {#                    👥 <span>Usuarios</span> #}
+    {#                </a> #}
+    {#                <a href="#" #}
+    {#                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition"> #}
+    {#                    ⚙️ <span>Configuración</span> #}
+    {#                </a> #}
+    {#            </nav> #}
+    {#            <div class="p-4 border-t border-gray-800"> #}
+    {#                <p class="text-sm text-gray-400 mb-2">{{ app.user.username }}</p> #}
+    {#                <a href="{{ path('admin_discord_disconnect') }}" #}
+    {#                   class="w-full text-left px-3 py-2 text-sm bg-red-600 hover:bg-red-700 rounded-lg transition"> #}
+    {#                    Cerrar sesión #}
+    {#                </a> #}
+    {#            </div> #}
+    {#        </aside> #}
+
+    {#        <!-- Main content --> #}
+    {#        <main class="flex-1 p-10 overflow-y-auto"> #}
+    {#            <div class="flex items-center justify-between mb-8"> #}
+    {#                <h1 class="text-3xl font-bold">👋 Hola {{ user.username }}</h1> #}
+    {#                <div class="text-sm text-gray-400">ID: {{ user.id.value }}</div> #}
+    {#            </div> #}
+
+    {#            <!-- Guilds --> #}
+    {#            <div class="bg-gray-950 border border-gray-800 rounded-2xl shadow-xl p-6"> #}
+    {#                <h2 class="text-xl font-semibold mb-4">Tus Servidores de Discord</h2> #}
+
+    {#                {% if guilds is not empty %} #}
+    {#                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"> #}
+    {#                        {% for guild in guilds %} #}
+    {#                            <div class="bg-gray-800 rounded-xl p-4 flex items-center gap-3 hover:bg-gray-700 transition"> #}
+    {#                                {% if guild.icon %} #}
+    {#                                    <img src="https://cdn.discordapp.com/icons/{{ guild.id }}/{{ guild.icon }}.png" #}
+    {#                                         alt="{{ guild.name }}" #}
+    {#                                         class="size-16 rounded-full"> #}
+    {#                                {% else %} #}
+    {#                                    <div class="size-16 rounded-full bg-gray-600 flex items-center justify-center text-sm"> #}
+    {#                                        {{ guild.name|first }} #}
+    {#                                    </div> #}
+    {#                                {% endif %} #}
+    {#                                <div> #}
+    {#                                    <p class="font-medium">{{ guild.name }}</p> #}
+    {#                                    <p class="text-xs text-gray-400">ID: {{ guild.id }}</p> #}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                        {% endfor %} #}
+    {#                    </div> #}
+    {#                {% else %} #}
+    {#                    <p class="text-gray-400">No se encontraron servidores.</p> #}
+    {#                {% endif %} #}
+    {#            </div> #}
+    {#        </main> #}
+    {#    </div> #}
+{% endblock %}
