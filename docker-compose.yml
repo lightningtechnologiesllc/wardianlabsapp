@@ -30,7 +30,9 @@ services:
     volumes:
       - ./public:/app/public:cached
     networks:
-      - app-network
+      app-network:
+        aliases:
+          - app.wardianlabs.test
 
   database:
     image: postgres:${POSTGRES_VERSION:-17.5}-alpine

@@ -71,16 +71,17 @@ final class AdminLoginTest extends PantherTestCase
 
             $this->takeScreenshot('admin-04b-after-scroll.png');
 
-            // Wait for the Authorize button to become enabled
-            $this->client->waitFor('button.primary_a22cb0:not([disabled])', 5);
+            // Wait for the second non-disabled button (Authorize button)
+            sleep(2);
 
             $authorizeButton = $this->client->findElement(
-                \Facebook\WebDriver\WebDriverBy::cssSelector('button.primary_a22cb0')
+                \Facebook\WebDriver\WebDriverBy::xpath('(//button[not(@disabled)])[2]')
             );
             $authorizeButton->click();
             sleep(2);
         } catch (\Exception $e) {
-            // Already authorized, will redirect automatically
+//            dump($this->client->getPageSource());
+            dd($e->getMessage());
         }
 
         $this->takeScreenshot('admin-05-after-auth.png');
