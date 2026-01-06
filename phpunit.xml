@@ -41,9 +41,9 @@
         <testsuite name="Unit">
             <directory>lib/modules/tests/unit</directory>
         </testsuite>
-        <!--        <testsuite name="Functional">-->
-        <!--            <directory>lib/modules/tests/functional</directory>-->
-        <!--        </testsuite>-->
+        <testsuite name="Functional">
+            <directory>lib/modules/tests/functional</directory>
+        </testsuite>
         <testsuite name="Integration">
             <directory>lib/modules/tests/integration</directory>
         </testsuite>
