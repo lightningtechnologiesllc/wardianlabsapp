@@ -11,3 +11,15 @@ https://discord.com/oauth2/authorize?client_id=1400919406074138685&scope=bot&per
 We need to grant permissions to the bot to write into the channel.
 
 Bot role needs to be above the channel role in the channel settings.
+
+
+### Impersonating users
+
+Define the SUPER_ADMIN usernames as a environment variable:
+```dotenv
+SUPER_ADMIN_USERNAMES=your_username,another_admin
+```
+
+```
+?_switch_user=target_username
+```

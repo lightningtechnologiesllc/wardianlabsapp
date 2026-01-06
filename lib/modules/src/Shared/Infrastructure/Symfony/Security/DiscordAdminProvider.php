@@ -29,10 +29,13 @@ final class DiscordAdminProvider implements UserProviderInterface, PasswordUpgra
      */
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        // Load a User object from your data source or throw UserNotFoundException.
-        // The $identifier argument is whatever value is being returned by the
-        // getUserIdentifier() method in your User class.
-        throw new \Exception('TODO: fill in loadUserByIdentifier() inside '.__FILE__);
+        $user = $this->userRepository->findByUsername($identifier);
+
+        if ($user === null) {
+            throw new UserNotFoundException(sprintf('User "%s" not found.', $identifier));
+        }
+
+        return $user;
     }
 
     /**

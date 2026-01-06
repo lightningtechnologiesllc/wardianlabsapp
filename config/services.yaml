@@ -12,6 +12,7 @@ parameters:
     default_mailer_dsn: '%env(DEFAULT_MAILER_DSN)%'
     default_mailer_from: '%env(DEFAULT_MAILER_FROM)%'
     allowed_platform_prices: '%env(ALLOWED_PLATFORM_PRICES)%'
+    super_admin_usernames: '%env(SUPER_ADMIN_USERNAMES)%'
 
 services:
     # default configuration for services in *this* file
@@ -196,3 +197,8 @@ services:
         arguments:
             $mainDomain: '%main_domain%'
         tags: ['controller.service_arguments']
+
+    App\Admin\Infrastructure\Security\SwitchUserVoter:
+        arguments:
+            $superAdminUsernames: '%super_admin_usernames%'
+        tags: ['security.voter']

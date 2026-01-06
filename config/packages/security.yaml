@@ -2,6 +2,7 @@ security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         users_in_memory: { memory: null }
@@ -30,6 +31,9 @@ security:
             stateless: false
 
             entry_point: App\Shared\Infrastructure\Symfony\Security\AuthenticationEntryPoint
+
+            switch_user:
+                role: CAN_SWITCH_USER
         main:
             lazy: true
             provider: users_in_memory
