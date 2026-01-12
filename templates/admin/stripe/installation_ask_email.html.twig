@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="turbo-prefetch" content="false">
+    <title>Complete Stripe Installation</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_script_tags('app') }}
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gray-300">
+    <div class="w-full max-w-md">
+        <div class="bg-gray-950 border border-gray-800 rounded-2xl shadow-xl p-8 text-center">
+            <div class="mb-6">
+                <svg class="w-16 h-16 mx-auto text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold text-white mb-2">Enter Your Email</h1>
+            <p class="text-gray-400 text-sm mb-6">
+                We couldn't find your email from your Stripe account. Please provide your email address to receive the installation link.
+            </p>
+
+            <form action="{{ path('admin_stripe_submit_email') }}" method="POST" class="space-y-4" data-turbo="false">
+                <div>
+                    <input type="email"
+                           name="email"
+                           required
+                           placeholder="your@email.com"
+                           class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <button type="submit"
+                        class="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-3 text-lg font-medium shadow-md transition cursor-pointer">
+                    Send Installation Link
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

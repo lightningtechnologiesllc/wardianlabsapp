@@ -52,6 +52,7 @@ security:
         - { path: ^/admin/subscription, roles: ROLE_ADMIN }
         - { path: ^/admin/stripe/callback, roles: PUBLIC_ACCESS }
         - { path: ^/admin/stripe/platform-webhook, roles: PUBLIC_ACCESS }
+        - { path: ^/admin/stripe/submit-email, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:

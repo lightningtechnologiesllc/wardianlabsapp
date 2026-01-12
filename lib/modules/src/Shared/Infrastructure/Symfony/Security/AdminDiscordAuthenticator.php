@@ -16,10 +16,13 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Wohali\OAuth2\Client\Provider\DiscordResourceOwner;
 
 final class AdminDiscordAuthenticator extends OAuth2Authenticator
 {
+    use TargetPathTrait;
+
     public function __construct(
         private readonly DiscordOauthClient        $discordOauthClient,
         private readonly RouterInterface           $router,
@@ -56,6 +59,13 @@ final class AdminDiscordAuthenticator extends OAuth2Authenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        $targetPath = $this->getTargetPath($request->getSession(), $firewallName);
+
+        if ($targetPath) {
+            $this->removeTargetPath($request->getSession(), $firewallName);
+            return new RedirectResponse($targetPath);
+        }
+
         return new RedirectResponse($this->router->generate('admin_home'));
     }
 

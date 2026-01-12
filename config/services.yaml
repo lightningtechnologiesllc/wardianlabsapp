@@ -202,3 +202,23 @@ services:
         arguments:
             $superAdminUsernames: '%super_admin_usernames%'
         tags: ['security.voter']
+
+    App\Admin\Domain\Stripe\PendingStripeInstallationRepository: '@App\Admin\Infrastructure\Persistence\Doctrine\Stripe\DoctrinePendingStripeInstallationRepository'
+
+    App\Admin\Ui\Adapter\Http\Stripe\InstallationCallbackController:
+        arguments:
+            $pendingInstallationRepository: '@App\Admin\Domain\Stripe\PendingStripeInstallationRepository'
+            $accountStripeProvider: '@App\Admin\Infrastructure\Provider\Stripe\Oauth2ClientAccountStripeProvider'
+            $defaultMailerFrom: '%default_mailer_from%'
+        tags: ['controller.service_arguments']
+
+    App\Admin\Ui\Adapter\Http\Stripe\CompleteInstallationController:
+        arguments:
+            $pendingInstallationRepository: '@App\Admin\Domain\Stripe\PendingStripeInstallationRepository'
+        tags: ['controller.service_arguments']
+
+    App\Admin\Ui\Adapter\Http\Stripe\SubmitEmailController:
+        arguments:
+            $pendingInstallationRepository: '@App\Admin\Domain\Stripe\PendingStripeInstallationRepository'
+            $defaultMailerFrom: '%default_mailer_from%'
+        tags: ['controller.service_arguments']

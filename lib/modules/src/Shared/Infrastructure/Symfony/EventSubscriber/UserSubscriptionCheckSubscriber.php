@@ -15,7 +15,6 @@ final readonly class UserSubscriptionCheckSubscriber implements EventSubscriberI
 {
     private const PROTECTED_PATH_PREFIXES = [
         '/admin/discord/',
-        '/admin/stripe',
     ];
 
     public function __construct(
